@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Portfolio with Hamburger Menu</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Using url_for to link to the CSS file in Flask -->
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="#about" onclick="showSection('about')">About Me</a></li>
+            <li><a href="#education" onclick="showSection('education')">Education</a></li>
+            <li><a href="#contact" onclick="showSection('contact')">Contact Me</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header-section">
+            <div class="header-content">
+                <img src="https://raw.githubusercontent.com/ANANTHAaravindbudamagunta123/techie-buddy/refs/heads/main/aravind.jpg" alt="Profile Image" class="profile-img">
+                <h1>Hi, I'm Budamagunt Anantha Aravind</h1>
+                <p>Passionate Developer | AI Enthusiast | Problem Solver</p>
+            </div>
+        </header>
+
+        <!-- Sections -->
+        <section id="about" class="section about-section">
+            <h2>About Me</h2>
+            <p>
+                I am a post-graduate with strong technical and problem-solving skills, passionate about software development. 
+                I am interested in AI and eager to learn more about it. I enjoy coding in Python, as well as front-end and back-end development.
+            </p>
+        </section>
+
+        <section id="education" class="section education-section hidden">
+            <h2>Education</h2>
+            <ul>
+                <li>2018: Completed schooling at Pragati Maha Vidyalaya School with 85% aggregate.</li>
+                <li>2020: Completed intermediate studies at Sri Chandra Reddy Junior College with 87%.</li>
+                <li>2023: Bachelor’s in Computer Science from Sri Chandra Reddy Degree College with 90%.</li>
+                <li>2025: Pursuing Master’s in Computer Applications at Narayana Engineering College, Nellore.</li>
+            </ul>
+        </section>
+
+        <section id="contact" class="section contact-section hidden">
+            <h2>Contact Me</h2>
+            
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <script>
+                        // Display flash messages as a popup
+                        {% for category, message in messages %}
+                        alert("{{ message }}");
+                        {% endfor %}
+                    </script>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Contact Form -->
+            <form action="{{ url_for('submit') }}" method="POST" class="contact-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Function to toggle sidebar
+        function toggleMenu() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+        }
+
+        // Function to show sections dynamically
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => section.classList.add('hidden'));
+
+            // Show the selected section
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            // Close sidebar (optional for better UX on mobile)
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.remove("active");
+        }
+    </script>
+</body>
+</html>
